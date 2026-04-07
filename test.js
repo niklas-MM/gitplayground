@@ -1,18 +1,16 @@
-const produkte = [
-  { name: "Vitamin D Tropfen", preis: 29.99, lager: 50 },
-  { name: "Omega 3", preis: 24.99, lager: 0 },
-  { name: "Vitamin B12", preis: 19.99, lager: 3 },
-  { name: "Jod Tropfen", preis: 17.99, lager: 25 }
-]
+const produkteLaden = async () => {
+  console.log("Lade Produkte...")
 
-const verfuegbare = produkte.filter((p) => p.lager > 0)
+  try {
+    const response = await fetch("https://fakestoreapi.com/products?limit=3")
+    const produkte = await response.json()
 
-const mitStatus = verfuegbare.map((p) => {
-  const status = p.lager < 10 ? "⚠️ Fast ausverkauft" : "✅ Auf Lager"
-  const angebotspreis = (p.preis * 0.9).toFixed(2)
-  return { name: p.name, status, angebotspreis }
-})
+    produkte.forEach((p) => {
+      console.log(`${p.title} | ${p.price}€`)
+    })
+  } catch (fehler) {
+    console.log("Fehler beim Laden:", fehler)
+  }
+}
 
-mitStatus.forEach((p) => {
-  console.log(`${p.name} | ${p.status} | Angebot: ${p.angebotspreis}€`)
-})
+produkteLaden()
